@@ -20,7 +20,6 @@ ready-made file at `<root>\input\defaults.calc` with sample calculations that ca
 ## Caveats
  - Parsing error reporting is woeful: the errors reported will mislead the user as to where the problem lies.
    Researching more libraries, or taking greater pains to analyse the underlying error structure may improve this.
- - whitespace processing seems to make some tests run very slow (a glance at the test report will confirm).
  - To keep the parsing simple, some unnecessary brackets are placed into the expression tree while parsing.
  - We use Li Haoyi's [uTest](https://github.com/com-lihaoyi/utest).  This is a cheap and cheerful framework with a few 
    small surprises.  `assert` error reporting depends on compile-time information, so dynamically generating assertions 

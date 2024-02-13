@@ -16,15 +16,12 @@ object ParserTests extends TestSuite:
       val input4 = " 14 + 12"
 
       val expected = Right (Operation (Bracket (Number (14)), Add, Bracket (Number (12))))
-      val result1 = Calculator.readExpression (input1)
-      val result2 = Calculator.readExpression (input2)
-      val result3 = Calculator.readExpression (input3)
-      val result4 = Calculator.readExpression (input4)
-
-      continually (result1 == expected)
-      continually (result2 == expected)
-      continually (result3 == expected)
-      continually (result4 == expected)
+      
+      assert (
+        Calculator.readExpression (input1) == expected,
+        Calculator.readExpression (input2) == expected,
+        Calculator.readExpression (input3) == expected,
+        Calculator.readExpression (input4) == expected)
 
     test ("White space is not significant between power elements"):
       val input1 = "14^12"
@@ -33,26 +30,20 @@ object ParserTests extends TestSuite:
       val input4 = " 14 ^ 12"
 
       val expected = Right (Bracket (Operation (Number (14), Pow, Number (12))))
-      val result1 = Calculator.readExpression (input1)
-      val result2 = Calculator.readExpression (input2)
-      val result3 = Calculator.readExpression (input3)
-      val result4 = Calculator.readExpression (input4)
 
-      continually (result1 == expected)
-      continually (result2 == expected)
-      continually (result3 == expected)
-      continually (result4 == expected)
+      assert (
+        Calculator.readExpression (input1) == expected,
+        Calculator.readExpression (input2) == expected,
+        Calculator.readExpression (input3) == expected,
+        Calculator.readExpression (input4) == expected
+      )
 
     test ("Calculator can read a number correctly"):
 
-      val result1 = Calculator.readExpression ("3.5")
-      val result2 = Calculator.readExpression ("3.")
-      val result3 = Calculator.readExpression ("-3")
-
       assert (
-        result1 == Right (Number (3.5)),
-        result2 == Right (Number (3)),
-        result3 == Right (Number (-3))
+        Calculator.readExpression ("3.5") == Right (Number (3.5)),
+        Calculator.readExpression ("3.") == Right (Number (3)),
+        Calculator.readExpression ("-3") == Right (Number (-3))
       )
 
     test ("Calculator can read nested power expressions"):
@@ -74,10 +65,11 @@ object ParserTests extends TestSuite:
       val result4 = Calculator.readExpression ("Nan")
 
       // FIXME - need to think about these unexpected errors.  Coarsen them perhaps?
-      assert (result1 == Left (ParserError ("'^' expected but '.' found", "3..5")))
-      assert (result2 == Left (ParserError ("'^' expected but '5' found", "3 5")))
-      assert (result3 == Left (ParserError ("'^' expected but 'f' found", "35f")))
-      assert (result4 == Left (ParserError ("'(' expected but 'N' found", "Nan")))
+      assert (
+        result1 == Left (ParserError ("'^' expected but '.' found", "3..5")),
+        result2 == Left (ParserError ("'^' expected but '5' found", "3 5")),
+        result3 == Left (ParserError ("'^' expected but 'f' found", "35f")),
+        result4 == Left (ParserError ("'(' expected but 'N' found", "Nan")))
 
     test ("Number parser fails on invalid bracket implementations"):
       val result1 = Calculator.readExpression ("()")
