@@ -1,7 +1,9 @@
 .idea
+.tags
 .metals
 .bsp
 *.swp
+bin/
 project/
 !project/build.properties
 target/
