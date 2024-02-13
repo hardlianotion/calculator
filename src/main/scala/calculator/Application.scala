@@ -39,9 +39,8 @@ object Application:
     )
   @main
   def run (inputFile: String): Unit =
-
     print (titleArt (title, titleFallback))
-
+    println (s"\nRunning calculator from $inputFile.\n")
     processDataFile (inputFile): line =>
       Calculator
         .value (line)
