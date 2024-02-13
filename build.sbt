@@ -12,7 +12,5 @@ lazy val root = (project in file ("."))
       "com.lihaoyi" %% "utest" % uTestVersion % "test",
       "org.scala-lang.modules" %% "scala-parser-combinators" % scalaParserCombinatorsVersion
     ),
-    testFrameworks += TestFramework ("utest.runner.Framework"),
-    scalacOptions += "-target:17",
-    javacOptions ++= Seq ("-source", "17", "-target", "17")
+    testFrameworks += TestFramework ("utest.runner.Framework")
   )
