@@ -21,22 +21,25 @@ object Application:
       case Right (result) => Right (result)
 
   // It's not serious if we've mucked up the ascii art
-  private def titleArt (dataFile: String, fallback: String): String =
+  private [calculator] def titleArt (dataFile: String, fallback: String): String =
     val result =
       for
-        buffer <- fromResourceFile (title)
+        buffer <- fromResourceFile (dataFile)
       yield
         buffer.mkString ("")
 
     s"${result.getOrElse (fallback)}"
 
-  private def processDataFile (fileName: String) (process: String => Unit): Either [IOError, Unit] =
+  // FIXME - we can't run any sensible tests on the output of examples.calc as
+  //         this api is not testable.
+  private [calculator] def processDataFile (fileName: String) (process: String => Unit): Either [IOError, Unit] =
     fromFileImpl (fileName) (
       Source.fromFile,
       _.getLines
        .foreach: line =>
          process (line)
     )
+
   @main
   def run (inputFile: String): Unit =
     print (titleArt (title, titleFallback))
