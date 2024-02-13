@@ -12,4 +12,4 @@ fi
 
 sbt clean test assembly
 
-mv target/scala-3.3.1/calculator-assembly*.jar bin/calculator.jar
+mv target/scala-*/calculator-assembly*.jar bin/calculator.jar
