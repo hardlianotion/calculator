@@ -76,7 +76,6 @@ object ParserTests extends TestSuite:
 
       assert (result1 == Left (ParserError ("'(' expected but ')' found", "()")))
 
-    test ("No implied implementations"):
+    test ("No implied operations permitted"):
       val result = Calculator.readExpression ("(4 * 5) (6 * 7)")
       assert (result == Left (ParserError ("'^' expected but '(' found","(4 * 5) (6 * 7)")))
-

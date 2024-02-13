@@ -13,9 +13,6 @@ ready-made file at `<root>\input\defaults.calc` with sample calculations that ca
  - the mathematical operations `+, -, ^, \, ^` have the usual mathematical properties:
    - `*` distributes over `+`,
    - `^` distributes over `*`,
- - **Stretch goals** 
-   - pause between each line to permit a user to enter their guess at the answer.  User shame is logged.
-   - configurable fixed point display precision.
 
 ## Caveats
  - Parsing error reporting is woeful: the errors reported will mislead the user as to where the problem lies.
