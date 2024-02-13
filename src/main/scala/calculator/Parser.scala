@@ -14,7 +14,7 @@ private [calculator] abstract class ParserImpl extends RegexParsers:
    *  - extension to include a power operator, which has a higher precedence than multiplication
    *
    * Implementation detail:
-   *  - multiplyTerm and linearCombination may yield a compiler warning because the match statement
+   *  - multiplyTerm and linearCombination yield a compiler warning because the match statement
    *    is not exhaustive.  This can be avoided by parsing into multiplicative and additive structures
    *    respectively.  But here, we can verify fairly simply for each function that the only possible
    *    parsed candidates appear in the match term, so we are content to leave the typing simple.

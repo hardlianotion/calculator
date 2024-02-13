@@ -3,8 +3,7 @@ package calculator
 
 object Calculator:
   import Parser.*
-
-
+  
   def value (expression: Expression): Double =
     expression match
       case Expression.Bracket (subExpression) =>
