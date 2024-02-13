@@ -3,9 +3,10 @@ package calculator
 import scala.util.parsing.combinator.RegexParsers
 
 
-object ExpressionParser extends RegexParsers:
+object Parser extends RegexParsers:
   import Expression.*
-
+  import CalculatorError.*
+  
   /**
    * Parser implementation is essentially lifted from scala.util.parsing.combinator.RegexParsers.
    *
@@ -19,29 +20,32 @@ object ExpressionParser extends RegexParsers:
    *    respectively.  But here, we can verify fairly simply for each function that the only possible
    *    parsed candidates appear in the match term, so we are content to leave the typing simple.
    */
-  def number: Parser [Number] = """-?\d+(\.\d*)?""".r ^^ { x => Number (x.toDouble) }
+  private [calculator] def number: Parser [Number] = """-?\d+(\.\d*)?""".r ^^ { x => Number (x.toDouble) }
 
-  def bracket: Parser [Bracket] = "(" ~> linearCombination <~ ")" ^^ { x => Bracket (x) }
+  private [calculator] def bracket: Parser [Bracket] = "(" ~> linearCombination <~ ")" ^^ { x => Bracket (x) }
 
-  def atom: Parser [Number | Bracket] = number | bracket
+  private [calculator] def atom: Parser [Number | Bracket] = number | bracket
 
-  def powerTerm: Parser [Expression] = rep (atom ~ "^") ~ atom ^^ {
+  private [calculator] def powerTerm: Parser [Expression] = rep (atom ~ "^") ~ atom ^^ {
     case list ~ number => list.foldRight (number) {
       (exp, rhs) => Bracket (Operation (exp._1, Pow, rhs))
     }
   }
 
-  def multiplyTerm: Parser [Expression] = powerTerm ~ rep ("*" ~ powerTerm | "/" ~ powerTerm) ^^ {
+  private [calculator] def multiplyTerm: Parser [Expression] = powerTerm ~ rep ("*" ~ powerTerm | "/" ~ powerTerm) ^^ {
     case number ~ list => list.foldLeft (number):
       case (expr: Expression, "*" ~ term) => Operation (Bracket (expr), Multiply, Bracket (term))
       case (expr: Expression, "/" ~ term) => Operation (Bracket (expr), Divide, Bracket (term))
   }
 
-  def linearCombination: Parser [Expression] = multiplyTerm ~ rep ("+" ~ multiplyTerm | "-" ~ multiplyTerm) ^^ {
+  private [calculator] def linearCombination: Parser [Expression] = multiplyTerm ~ rep ("+" ~ multiplyTerm | "-" ~ multiplyTerm) ^^ {
     case number ~ list => list.foldLeft (number):
       case (expr, "+" ~ term) => Operation (Bracket (expr), Add, Bracket (term))
       case (expr, "-" ~ term) => Operation (Bracket (expr), Subtract, Bracket (term))
   }
 
-
-
+  def readExpression (input: String): Either [CalculatorError, Expression] =
+    parseAll (linearCombination, input) match
+      case Success (expression, _) => Right (expression)
+      case Failure (error, next) => Left (ParserError (error, next.source.toString))
+      case Error (error, next) =>Left (ParserError (error, next.source.toString))
