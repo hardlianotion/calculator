@@ -1,0 +1,7 @@
+.idea
+.metals
+.bsp
+*.swp
+project/
+!project/build.properties
+target/
