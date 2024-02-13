@@ -1,7 +1,7 @@
 package calculator
 
 import scala.io.{BufferedSource, Source}
-import scala.util.Try
+import scala.util.{Using, Try}
 
 
 object Application:
@@ -12,16 +12,11 @@ object Application:
   private lazy val title = "calculator.txt"
   private lazy val titleFallback = "\nRunning calculator ...\n\n\n"
 
-  private def fromResourceFile (fileName: String): Either [IOError, BufferedSource] =
-    fromFileImpl (Source.fromResource (_)) (fileName)
+  private def fromResourceFile (fileName: String): Either [IOError, String] =
+    fromFileImpl (fileName) (Source.fromResource (_), _.mkString (""))
 
-  private def fromDataFile (fileName: String): Either [IOError, BufferedSource] =
-    fromFileImpl (Source.fromFile) (fileName)
-
-  private def fromFileImpl (getBufferFromSource: String => BufferedSource) (fileName: String): Either [IOError, BufferedSource] =
-    Try {
-      getBufferFromSource (fileName)
-    }.toEither match
+  private def fromFileImpl [U] (fileName: String) (getBufferFromSource: String => BufferedSource, action: BufferedSource => U) : Either [IOError, U] =
+    Using (getBufferFromSource (fileName)) (action).toEither match
       case Left (error) => Left (IOError (error.getMessage, fileName))
       case Right (result) => Right (result)
 
@@ -31,29 +26,23 @@ object Application:
       for
         buffer <- fromResourceFile (title)
       yield
-        buffer.getLines.fold (""): (agg, rhs) =>
-            s"$agg$rhs\n"
+        buffer.mkString ("")
 
     s"${result.getOrElse (fallback)}"
 
+  private def processDataFile (fileName: String) (process: String => Unit): Either [IOError, Unit] =
+    fromFileImpl (fileName) (
+      Source.fromFile,
+      _.getLines
+       .foreach: line =>
+         process (line)
+    )
   @main
   def run (inputFile: String): Unit =
-    val inputAttempt = fromDataFile (inputFile)
-    
-    System.out.print (titleArt (title, titleFallback))
-    
-    val dataAttempt =
-      for
-        input <- inputAttempt
-      yield
-        for 
-          entry <- input.getLines
-        yield 
-          Calculator.value (entry).foreach: result =>
-            println (s"$entry = $result")
-    
-        
 
+    print (titleArt (title, titleFallback))
 
-
-
+    processDataFile (inputFile): line =>
+      Calculator
+        .value (line)
+        .fold (logError, result => println (s"$line = $result"))

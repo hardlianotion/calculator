@@ -16,7 +16,7 @@ object CalculatorError:
   private def fakeLog (message: String): Unit =
     System.err.println (message)
     
-  private def errorMessage (error: CalculatorError): String =
+  def errorMessage (error: CalculatorError): String =
     error match
       case ParserError (msg, next) => 
         s"ParserError: $msg, while parsing $next"
@@ -25,6 +25,7 @@ object CalculatorError:
         
   def logError (error: CalculatorError): Unit =
     fakeLog (errorMessage (error))
+
     
 
 

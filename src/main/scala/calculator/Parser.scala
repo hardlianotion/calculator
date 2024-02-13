@@ -46,7 +46,7 @@ private [calculator] abstract class ParserImpl extends RegexParsers:
 object Parser extends ParserImpl:
   import CalculatorError.*
 
-  def readExpression (input: String): Either [CalculatorError, Expression] =
+  def readExpression (input: String): Either [ParserError, Expression] =
     parseAll (linearCombination, input) match
       case Success (expression, _) => Right (expression)
       case Failure (error, next) => Left (ParserError (error, next.source.toString))

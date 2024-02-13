@@ -1,5 +1,7 @@
 package calculator
 
+import calculator.CalculatorError.ParserError
+
 
 object Calculator:
   import Parser.*
@@ -13,5 +15,5 @@ object Calculator:
       case Expression.Number (value) =>
         value
 
-  def value (expression: String): Either [CalculatorError, Double] =
+  def value (expression: String): Either [ParserError, Double] =
     readExpression (expression).map (value)
