@@ -50,6 +50,31 @@ object ParserTests extends TestSuite:
         Parser.readExpression ("-3") == Right (Number (-3))
       )
 
+    test ("Parser can parse simple addition."):
+      val result = Parser.readExpression ("3 + 2")
+
+      assert (result == Right (Operation (Bracket (Number (3)), Add, Bracket (Number (2)))))
+
+    test ("Parser can parse simple subtraction."):
+      val result = Parser.readExpression ("3 - 2")
+
+      assert (result == Right (Operation (Bracket (Number (3)), Subtract, Bracket (Number (2)))))
+
+    test ("Parser can parse simple multiplication."):
+      val result = Parser.readExpression ("3 * 2")
+
+      assert (result == Right (Operation (Bracket (Number (3)), Multiply, Bracket (Number (2)))))
+
+    test ("Parser can parse simple division."):
+      val result = Parser.readExpression ("3 / 2")
+
+      assert (result == Right (Operation (Bracket (Number (3)), Divide, Bracket (Number (2)))))
+
+    test ("Parser can parse simple exponentiation."):
+      val result = Parser.readExpression ("3 ^ 2")
+
+      assert (result == Right (Bracket (Operation (Number (3), Pow, Number (2)))))
+
     test ("Parser can read nested power expressions"):
       val result = Parser.readExpression ("3^2^1")
       assert (result == Right (Bracket (Operation (Number (3), Pow, Bracket (Operation (Number (2), Pow, Number (1)))))))

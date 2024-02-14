@@ -7,6 +7,31 @@ object ComputationTests extends TestSuite:
   import Expression.*
 
   val tests: Tests = Tests.apply:
+    test ("Addition works properly"):
+      val expr = Operation (Number (3), Add, Number (2))
+      val expected = 3 + 2
+      assert (Calculator.value (expr) == expected)
+
+    test ("Subtraction works properly"):
+      val expr = Operation (Number (3), Subtract, Number (2))
+      val expected = 3 - 2
+      assert (Calculator.value (expr) == expected)
+
+    test ("Multiplication works properly"):
+      val expr = Operation (Number (3), Multiply, Number (2))
+      val expected = 3 * 2
+      assert (Calculator.value (expr) == expected)
+
+    test ("Division works properly"):
+      val expr = Operation (Number (3), Divide, Number (2))
+      val expected = 3.0 / 2.0
+      assert (Calculator.value (expr) == expected)
+
+    test ("Exponentiation works properly"):
+      val expr = Operation (Number (3), Pow, Number (2))
+      val expected = pow (3, 2)
+      assert (Calculator.value (expr) == expected)
+
     test ("Can compute nested powers correctly"):
       val expr = Bracket (Operation (Number (5), Pow, Bracket (Operation (Number (3), Pow, Number (2)))))
       val input = "5^3^2"
