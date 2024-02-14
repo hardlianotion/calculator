@@ -38,7 +38,7 @@ object ParserTests extends TestSuite:
         Parser.readExpression (input4) == expected
       )
 
-    test ("Calculator can read a number correctly"):
+    test ("Parser can read a number correctly"):
 
       assert (
         Parser.readExpression ("3.5") == Right (Number (3.5)),
@@ -46,19 +46,24 @@ object ParserTests extends TestSuite:
         Parser.readExpression ("-3") == Right (Number (-3))
       )
 
-    test ("Calculator can read nested power expressions"):
+    test ("Parser can read nested power expressions"):
       val result = Parser.readExpression ("3^2^1")
       assert (result == Right (Bracket (Operation (Number (3), Pow, Bracket (Operation (Number (2), Pow, Number (1)))))))
 
-    test ("Calculator can read nested multiply expressions"):
+    test ("Parser can read nested negative powers correctly"):
+      val result = Parser.readExpression ("3^-2^-1")
+      assert (
+        result == Right (Bracket (Operation (Number (3), Pow, Bracket (Operation (Number (-2), Pow, Number (-1)))))))
+
+    test ("Parser can read nested multiply expressions"):
       val result = Parser.readExpression ("3*2*1")
       assert (result == Right (Operation (Bracket (Operation (Bracket (Number (3)), Multiply, Bracket (Number (2)))), Multiply, Bracket (Number (1)))))
 
-    test ("Calculator can read nested () expressions"):
+    test ("Parser can read nested () expressions"):
       val result = Parser.readExpression ("((((3))))")
       assert (result == Right (Bracket (Bracket (Bracket (Bracket (Number (3)))))))
 
-    test ("Number parser fails on faulty fixed point representations"):
+    test ("Parser fails on faulty fixed point representations"):
       val result1 = Parser.readExpression ("3..5")
       val result2 = Parser.readExpression ("3 5")
       val result3 = Parser.readExpression ("35f")
@@ -71,11 +76,11 @@ object ParserTests extends TestSuite:
         result3 == Left (ParserError ("'^' expected but 'f' found", "35f")),
         result4 == Left (ParserError ("'(' expected but 'N' found", "Nan")))
 
-    test ("Number parser fails on invalid bracket implementations"):
+    test ("Parser fails on invalid bracket implementations"):
       val result1 = Parser.readExpression ("()")
 
       assert (result1 == Left (ParserError ("'(' expected but ')' found", "()")))
 
-    test ("No implied operations permitted"):
+    test ("Parser permits no implied multiplication operators"):
       val result = Parser.readExpression ("(4 * 5) (6 * 7)")
       assert (result == Left (ParserError ("'^' expected but '(' found","(4 * 5) (6 * 7)")))
