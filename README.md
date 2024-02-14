@@ -31,10 +31,16 @@ Further build and usage instructions can be found in section *Build and run*.
 
 ### Detailed Calculator Description
 
-Calculator takes an formula file as input and processes each line in the file.  Lines that represent simple
-mathematical formulas are parsed into an expression tree.  The others are converted into errors.  Calculator values
-each expression it produces and prints the value to screen.  Calculator prints out each error it encounters to screen,
-with the formula that gives rise to it.
+Calculator takes a formula file as input and processes each line in the file.  A formula file looks like
+```
+8 + 9
+7 * 6
+(1 + 5)^(1 + 1) - (1 - 5)^2
+(1 + 5)^(1 + 1)^0 - (1 - 5)^2^0
+```
+Lines that represent simple mathematical formulas are parsed into an expression tree.  The others are converted into 
+errors.  Calculator values each expression it produces and prints the value to screen.  Calculator prints out each 
+error it encounters to screen, with the formula that gives rise to it.
 
 ### Features
  - Calculator models decimals using `Double`, a floating type, 
@@ -67,14 +73,16 @@ Calculator has a few components (unfortunately, one of them is called `Calculato
 ### Build and run 
 **From scripts** - On a POSIX compatible shell, call the following fragile bash scripts from the root directory: 
  - `scripts/build.sh` - clears `./bin` directory, builds a fat jar and places it at `./bin/calculator.jar`.
- - `scripts/run.sh <formula-input.calc>` - if called with an input file with equations on each line, will
-   run Calculator over input of the form
-   ```
-   8 + 9
-   7 * 6
-   (1 + 5)^(1 + 1) - (1 - 5)^2
-   ```
-   otherwise, if run without argument, will run Calculator with the file `input/defaults.calc`.
+- `scripts/run.sh <formula-input.calc>` - if called with an input file with simple mathematical formulae on each 
+  line,
+  ```
+  8 + 9
+  7 * 6
+  (1 + 5)^(1 + 1) - (1 - 5)^2
+  ```
+  will parse and value line, sending output to the screen. 
+
+  otherwise, if run without argument, will run Calculator with the file `input/defaults.calc`.
  - `scripts/build-and-run.sh` - builds the fat jar and runs Calculator with the file `input/defaults.calc`.
 
 **Using sbt** - we can also build the project using sbt.
