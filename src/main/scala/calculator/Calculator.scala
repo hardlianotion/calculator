@@ -5,8 +5,9 @@ import calculator.CalculatorError.ParserError
 
 object Calculator:
   import Parser.*
+  import calculator.Expression.CalculationExpression
   
-  def value (expression: Expression): Double =
+  def value (expression: CalculationExpression): Double =
     expression match
       case Expression.Bracket (subExpression) =>
         value (subExpression)
