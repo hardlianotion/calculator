@@ -64,7 +64,7 @@ mathematical formula.
 Calculator has a few components (unfortunately, one of them is called `Calculator` - ed)
  - `Parser` - converts a string into an `Expression`, if the string is a mathematical formula that the Parser 
               understands, or an error otherwise,
- - `Calculator` - processes `Expression` depth-first to produce a value.  Calculator can value any `Exoression` 
+ - `Calculator` - processes `Expression` depth-first to produce a value.  Calculator can value any `Expression` 
                   produced by `Parser`,
  - `Application` - responsible for input and output to `Parser` and `Calculator`.  `Application` loads file input 
                    into `Parser` and prints `Calculator` output to the screen.
