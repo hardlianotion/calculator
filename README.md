@@ -5,33 +5,52 @@ Calculator is a simple file-based calculator, built as a demo to compete for a j
 Customer requirements eschew a conventional calculator interface in favour of a file-based input system.  There is a
 ready-made file at `<root>\input\defaults.calc` with sample calculations that can be run as default.
 
-## Features
- - decimals are modelled using `Double`, a floating type.  This may confound user expectations which might expect  
-   a fixed point type.  In doing this, we trade away uniform precision and gain implementation simplicity and 
-   avoidance of overflow errors, slightly simplifying the valuation framework. 
+### Features
+ - Calculator models decimals using `Double`, a floating type, 
  - operator `^` has precedence over `*, /`, which have precedence over `+, -`,
  - the mathematical operations `+, -, ^, \, ^` have the usual mathematical properties:
    - `*` distributes over `+`,
-   - `^` distributes over `*`,
+   - `^` distributes over `*`.
 
-## Caveats
- - Parsing error reporting is woeful: the errors reported will mislead the user as to where the problem lies.
-   Researching more libraries, or taking greater pains to analyse the underlying error structure may improve this.
+### Caveats
+ - No consistent number formatting - output typically shows differences between input and output number formats,
+ - Parsing error reporting is poor: reported errors are misleading, further work would need to address this,
  - To keep the parsing simple, some unnecessary brackets are placed into the expression tree while parsing.
- - We use Li Haoyi's [uTest](https://github.com/com-lihaoyi/utest).  This is a cheap and cheerful framework with a few 
-   small surprises.  `assert` error reporting depends on compile-time information, so dynamically generating assertions 
-   and test identifiers is not really in question.  It also means that some of the tests here give good output as long 
-   as they pass.  The error messages when they fail will be quite confusing.
+ - [uTest](https://github.com/com-lihaoyi/utest)'s `assert` reporting depends on compile-time information, so can't dynamically generate test 
+   assertions or identifiers.  So error messages some tests look tidy give good output as, long 
+   as they pass.  The error messages if they fail will be quite confusing.
 
-### Getting started
-One-click build and run with default options `./setup_and_run.sh`
+### Build and run 
+**From scripts** - the project contains some fragile bash scripts that can be called from 
+ - `./build.sh` - clears `./bin` directory, builds a fat jar and places it at `./bin/calculator.jar`.
+ - `./run.sh <formula-input.calc>` - if called with an input file with equations on each line, will
+   run Calculator over input of the form
+   ```
+   8 + 9
+   7 * 6
+   (1 + 5)^(1 + 1) - (1 - 5)^2
+   ```
+   otherwise, if run without argument, will run Calculator with the file `input/defaults.calc`.
+ - `./build-and-run.sh` - builds the fat jar and runs Calculator with the file `input/defaults.calc`.
 
-### Build, test, run and package
-Requirements sbt - sbt 1.9.8 was used to build calculator.
+**Using sbt** - we can also build the project using sbt.
 
- - compile: `sbt compile`
- - test: `sbt test`
- - run: `sbt run`
- - package: `sbt package`
+*Prerequisites* - the application is built using
+- sbt 1.9.8, but sbt versions >= 1.x.y should be fine,
+- scala 3.3.1, but scala versions 3.* should be fine,
+- java 21, but has been tested with java versions >= 17.
 
-The package command builds an executable fat jar.
+sbt has the following commands, which take the form `sbt <command-name>`. 
+
+ - clean: remove all intermediate products `sbt clean`
+ - compile: build source into class files `sbt compile`
+ - test: run test cases `sbt test`
+ - run: run the application `sbt run`
+ - assemble: build an executable fat jar `sbt assembly`
+
+A fat jar contains all the project dependencies, so can be run independently
+
+`java -jar target/scala-<scala-version>/calculator-assembly-<version>.jar <formula-input.calc>`,
+
+and `<formula-input.calc>` is optional, as before.  
+Currently, `<scala-version> = 3.3.1` and `<version> = "0.1.0-SNAPSHOT"`.
