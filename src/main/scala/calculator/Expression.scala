@@ -17,6 +17,7 @@ object Expression:
       math.pow (l, r)
 
   sealed trait AdditiveOperator extends Operator
+
   case object Add extends AdditiveOperator:
     def compute (l: Double, r: Double): Double =
       l + r
@@ -26,6 +27,7 @@ object Expression:
       l - r
 
   sealed trait MultiplicativeOperator extends Operator
+
   case object Multiply extends MultiplicativeOperator:
     def compute (l: Double, r: Double): Double =
       l * r
@@ -35,6 +37,7 @@ object Expression:
       l / r
 
   sealed trait CalculationExpression extends Expression
+
   case class Number (value: Double) extends CalculationExpression
 
   case class Bracket (expression: CalculationExpression) extends CalculationExpression
