@@ -4,7 +4,7 @@ import utest.*
 import math.pow
 
 object ComputationTests extends TestSuite:
-  import Expression.*
+  import Symbol.*
 
   val tests: Tests = Tests.apply:
     test ("Addition works properly"):

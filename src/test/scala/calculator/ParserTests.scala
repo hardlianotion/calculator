@@ -5,7 +5,7 @@ import utest.*
 
 
 object ParserTests extends TestSuite:
-  import Expression.*
+  import Symbol.*
 
   val tests: Tests = Tests.apply:
 

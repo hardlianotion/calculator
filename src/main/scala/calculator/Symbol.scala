@@ -5,11 +5,11 @@ import scala.math
 
 type Value = Double
 
-sealed trait Expression
+sealed trait Symbol
 
-object Expression:
+object Symbol:
   
-  sealed trait Operator extends Expression:
+  sealed trait Operator extends Symbol:
     def compute (l: Double, r: Double): Double
 
   case object Pow extends Operator:
@@ -36,13 +36,13 @@ object Expression:
     def compute (l: Double, r: Double): Double =
       l / r
 
-  sealed trait CalculationExpression extends Expression
+  sealed trait Expression extends Symbol
 
-  case class Number (value: Double) extends CalculationExpression
+  case class Number (value: Double) extends Expression
 
-  case class Bracket (expression: CalculationExpression) extends CalculationExpression
+  case class Bracket (expression: Expression) extends Expression
 
   case class Operation (
     leftOperand: Bracket | Number, 
     op: Operator,
-    rightOperand: Bracket | Number) extends CalculationExpression
+    rightOperand: Bracket | Number) extends Expression

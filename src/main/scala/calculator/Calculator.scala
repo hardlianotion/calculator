@@ -5,15 +5,15 @@ import calculator.CalculatorError.ParserError
 
 object Calculator:
   import Parser.*
-  import calculator.Expression.CalculationExpression
+  import calculator.Symbol.Expression
   
-  def value (expression: CalculationExpression): Double =
+  def value (expression: Expression): Double =
     expression match
-      case Expression.Bracket (subExpression) =>
+      case Symbol.Bracket (subExpression) =>
         value (subExpression)
-      case Expression.Operation (leftOperand, op, rightOperand) =>
+      case Symbol.Operation (leftOperand, op, rightOperand) =>
         op.compute (value (leftOperand), value (rightOperand))
-      case Expression.Number (value) =>
+      case Symbol.Number (value) =>
         value
 
   def value (expression: String): Either [ParserError, Double] =
