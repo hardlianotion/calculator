@@ -15,7 +15,10 @@ object Application:
   private def fromResourceFile (fileName: String): Either [IOError, String] =
     fromFileImpl (fileName) (Source.fromResource (_), _.mkString (""))
 
-  private def fromFileImpl [U] (fileName: String) (getBufferFromSource: String => BufferedSource, action: BufferedSource => U) : Either [IOError, U] =
+  private def fromFileImpl [U] (fileName: String) (
+    getBufferFromSource: String => BufferedSource,
+    action: BufferedSource => U
+  ) : Either [IOError, U] =
     Using (getBufferFromSource (fileName)) (action).toEither match
       case Left (error) => Left (IOError (error.getMessage, fileName))
       case Right (result) => Right (result)

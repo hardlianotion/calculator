@@ -1,9 +1,11 @@
 .idea
+.DS_Store
 .tags
 .metals
 .bsp
 *.swp
 bin/
-project/
+project/*
 !project/build.properties
+!project/plugins.sbt
 target/

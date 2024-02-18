@@ -1,5 +1,4 @@
 #!/bin/sh
-#
 # WARNING - tHis script will delete the contents of your bin directory.
 #
 # ASSUMPTION - sbt is installed 1.*.  The build has been tested with sbt 1.9.8
