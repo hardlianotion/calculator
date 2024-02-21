@@ -1,7 +1,7 @@
 package calculator
 
 import scala.io.{BufferedSource, Source}
-import scala.util.{Using, Try}
+import scala.util.Using
 
 
 object Application:

@@ -4,7 +4,7 @@ package calculator
 /**
  * CalculationError - the errors Calculator is anticipated to make
  *
- * NOTE - Calculator computes using floating point types, we don't
+ * NOTE - Calculator computes using floating point types,
  *        so ArithmeticException errors are not encountered.
  */
 sealed trait CalculatorError
