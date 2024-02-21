@@ -16,16 +16,12 @@ object ParserTests extends TestSuite:
       val input4 = " 14 + 12"
 
       val expected = Right (Operation (Bracket (Number (14)), Add, Bracket (Number (12))))
-      val result1 = Parser.readExpression (input1)
-      val result2 = Parser.readExpression (input2)
-      val result3 = Parser.readExpression (input3)
-      val result4 = Parser.readExpression (input4)
 
       assert (
-        result1 == expected,
-        result2 == expected,
-        result3 == expected,
-        result4 == expected)
+        Parser.readExpression (input1) == expected,
+        Parser.readExpression (input2) == expected,
+        Parser.readExpression (input3) == expected,
+        Parser.readExpression (input4) == expected)
 
     test ("White space is not significant between power elements"):
       val input1 = "14^12"

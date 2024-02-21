@@ -21,7 +21,7 @@ private [calculator] abstract class ParserImpl extends RegexParsers:
 
   def atom: Parser [Number | Bracket] = number | bracket
 
-  private [calculator] def powerTerm: Parser [Expression] = rep (atom ~ "^") ~ atom ^^ {
+  def powerTerm: Parser [Expression] = rep (atom ~ "^") ~ atom ^^ {
     case list ~ number => list.foldRight (number) {
       (exp, rhs) => Bracket (Operation (exp._1, Pow, rhs))
     }
