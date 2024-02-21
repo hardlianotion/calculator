@@ -60,8 +60,9 @@ object ComputationTests extends TestSuite:
       val negExpr = Operation (Number (-5), Divide, Number (0))
       val negResult = Calculator.value (negExpr)
       
-      assert (result == Double.PositiveInfinity)
-      assert (negResult == Double.NegativeInfinity)
+      assert (
+        result == Double.PositiveInfinity,
+        negResult == Double.NegativeInfinity)
     
     test ("zero divided by zero gives NaN"):
       assert (Calculator.value ("0 / 0").map (_.isNaN) == Right (true))
@@ -71,16 +72,18 @@ object ComputationTests extends TestSuite:
       val plusThenTimesParens = "3 + (4 * 5)"
       val timesThemPlusParens = "4 * 5 + 3"
       
-      assert (Calculator.value (plusThenTimesNoParens) == Calculator.value (plusThenTimesParens))
-      assert (Calculator.value (timesThemPlusParens) == Calculator.value (plusThenTimesParens))
+      assert (
+        Calculator.value (plusThenTimesNoParens) == Calculator.value (plusThenTimesParens),
+        Calculator.value (timesThemPlusParens) == Calculator.value (plusThenTimesParens))
     
     test ("exponentiation has higher precedence than multiplication"):
       val powThenTimesNoParens = "3^4 * 5"
       val timesThenPowParens = "5 * (3^4)"
       val timesThenPowNoParens = "5 * 3^4"
 
-      assert (Calculator.value (powThenTimesNoParens) == Calculator.value (timesThenPowParens))
-      assert (Calculator.value (powThenTimesNoParens) == Calculator.value (timesThenPowNoParens))
+      assert (
+        Calculator.value (powThenTimesNoParens) == Calculator.value (timesThenPowParens),
+        Calculator.value (powThenTimesNoParens) == Calculator.value (timesThenPowNoParens))
 
     test ("multiplication distributes over addition"):
       val bracketed = "(3 + 4) * 5"
